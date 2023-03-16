@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<br>
+<form action="" method="post" autocomplete="off">
+    <p>Pass US Zipcode, UK Postcode, Canada Postalcode, IP address, Latitude/Longitude (decimal degree) or city name.</p>
+    {%csrf_token%}
+    {{form.as_p}}
+    <button type="submit" class="btn btn-success">Submit</button>
+    <br>
+    <br>
+    <table class="table">
+        <thead>
+            <p>Weather for {{response.location.name}}, {{response.location.country}}. </p>
+            <tr>
+                <th scope="col">Forecast Dates</th>
+                {% for i in response.forecast.forecastday %}
+                    <th scope="col">{{ i.date }}</th>
+                {% endfor %}
+             </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Average Temperature (F)</th>
+            {% for i in response.forecast.forecastday %}
+                    <td scope="col">{{ i.day.avgtemp_f }}</td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <th scope="row">Temperature Low/High (F)</th>
+            {% for i in response.forecast.forecastday %}
+                    <td scope="col">{{ i.day.mintemp_f }} / {{ i.day.maxtemp_f }}</td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <th scope="row">Wind High (MPH)</th>
+            {% for i in response.forecast.forecastday %}
+                    <td scope="col">{{ i.day.maxwind_mph }}</td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <th scope="row">Condition</th>
+            {% for i in response.forecast.forecastday %}
+                    <td scope="col">{{ i.day.condition.text }}</td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <th scope="row">UV</th>
+            {% for i in response.forecast.forecastday %}
+                    <td scope="col">{{ i.day.uv }}</td>
+            {% endfor %}
+          </tr>
+        </tbody>
+      </table>
+</form>
+<br>
+{% endblock content %}
